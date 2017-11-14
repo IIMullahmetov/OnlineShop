@@ -12,6 +12,7 @@ namespace OnlineShopApi.Controllers
 	public class HomeController : Controller
 	{
 		private UnitOfWork unitOfWork = new UnitOfWork();
+
 		public ActionResult Index()
 		{
 			ViewBag.Title = "Home Page";
@@ -19,8 +20,10 @@ namespace OnlineShopApi.Controllers
 			return View();
 		}
 
+		[Authorize]
 		public ActionResult ProductList(int id = 1)
 		{
+			var r = HttpContext.User.Identity.Name;
 			IEnumerable<GetProductListViewModel> result = unitOfWork.ProductRepo().Get().Select(p => new GetProductListViewModel
 			{
 				Id = p.Id,
