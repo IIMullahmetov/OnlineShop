@@ -36,6 +36,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.2.2.7\lib\net45\Mono.Security.dll</HintPath>
     </Reference>
@@ -61,17 +67,24 @@
   <ItemGroup>
     <Compile Include="Context.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
+    <Compile Include="Entities\Basket.cs" />
+    <Compile Include="Entities\BasketProduct.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Order.cs" />
+    <Compile Include="Entities\OrderProduct.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="GenericRepo.cs" />
     <Compile Include="IGenericRepo.cs" />
     <Compile Include="IUnitOfWork.cs" />
-    <Compile Include="Migrations\201711121934597_Initialize.cs" />
-    <Compile Include="Migrations\201711121934597_Initialize.Designer.cs">
-      <DependentUpon>201711121934597_Initialize.cs</DependentUpon>
+    <Compile Include="Migrations\201711131758493_Initialize.cs" />
+    <Compile Include="Migrations\201711131758493_Initialize.Designer.cs">
+      <DependentUpon>201711131758493_Initialize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711142044450_AddedGuid.cs" />
+    <Compile Include="Migrations\201711142044450_AddedGuid.Designer.cs">
+      <DependentUpon>201711142044450_AddedGuid.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,8 +105,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201711121934597_Initialize.resx">
-      <DependentUpon>201711121934597_Initialize.cs</DependentUpon>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201711131758493_Initialize.resx">
+      <DependentUpon>201711131758493_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711142044450_AddedGuid.resx">
+      <DependentUpon>201711142044450_AddedGuid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

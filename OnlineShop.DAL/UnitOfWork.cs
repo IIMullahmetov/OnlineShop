@@ -6,8 +6,18 @@ namespace OnlineShop.DAL
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-		private Context Context { get; set; } = new Context();
+		private Context Context { get; set; } 
 		private bool disposed = false;
+
+		public UnitOfWork()
+		{
+			Context = new Context();
+		}
+
+		public UnitOfWork(string connection)
+		{
+			Context = new Context();
+		}
 
 		public virtual void Dispose(bool disposing)
 		{

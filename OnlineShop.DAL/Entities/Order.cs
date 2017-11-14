@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineShop.DAL.Entities
@@ -8,8 +9,9 @@ namespace OnlineShop.DAL.Entities
 	{
 		public Order()
 		{
-			Products = new HashSet<Product>();
+			Products = new HashSet<OrderProduct>();
 		}
+
 		public DateTimeOffset CreateDt { get; set; }
 
 		public int Count { get; set; }
@@ -19,6 +21,6 @@ namespace OnlineShop.DAL.Entities
 		[ForeignKey("UserId")]
 		public virtual User User { get; set; }
 
-		public virtual ICollection<Product> Products { get; set; }
+		public virtual ICollection<OrderProduct> Products { get; set; }
 	}
 }

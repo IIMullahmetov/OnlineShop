@@ -8,8 +8,10 @@ namespace OnlineShop.DAL.Entities
 	{
 		public Product()
 		{
-			Orders = new HashSet<Order>();
+			Orders = new HashSet<OrderProduct>();
+			Baskets = new HashSet<BasketProduct>();
 		}
+
 		public string Name { get; set; }
 
 		[MaxLength(length: 128, ErrorMessage = "Длина не должна превышать 128 символов")]
@@ -24,6 +26,8 @@ namespace OnlineShop.DAL.Entities
 		[ForeignKey("CategoryId")]
 		public virtual Category Category { get; set; }
 
-		public virtual ICollection<Order> Orders { get; set; }
+		public virtual ICollection<OrderProduct> Orders { get; set; }
+
+		public virtual ICollection<BasketProduct> Baskets { get; set; }
 	}
 }

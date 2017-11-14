@@ -11,15 +11,23 @@ namespace OnlineShop.DAL
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}
 
+		public Context(string connection) : base(connection)
+		{
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
+		}
+
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Category>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Role>());
+			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Basket>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<User>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Product>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Order>());
+			modelBuilder.Configurations.Add(new EntityTypeConfiguration<OrderProduct>());
+			modelBuilder.Configurations.Add(new EntityTypeConfiguration<BasketProduct>());
 		}
 	}
 }

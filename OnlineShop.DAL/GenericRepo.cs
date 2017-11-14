@@ -17,13 +17,17 @@ namespace OnlineShop.DAL
 			_dbSet = context.Set<TEntity>();
 		}
 
-		public IEnumerable<TEntity> Get() => _dbSet.AsNoTracking().ToList();
-		
-		public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate) 
-			=> _dbSet.AsNoTracking().Where(predicate).ToList();
-		
+		public IEnumerable<TEntity> Get() => _dbSet.AsNoTracking();
+
+		public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
+			=> _dbSet.AsNoTracking().Where(predicate);
+
+
+		public IEnumerable<TEntity> Get(int page) => _dbSet.OrderBy(t => t.Id).Skip((page - 1) * 10).Take(10);
+
+
 		public TEntity FindById(int id) => _dbSet.Find(id);
-		
+
 		public void Create(TEntity item)
 		{
 			_dbSet.Add(item);
@@ -35,5 +39,7 @@ namespace OnlineShop.DAL
 			_dbSet.Remove(item);
 			_context.SaveChanges();
 		}
+
+		public int Count() => _dbSet.Count();
 	}
 }
