@@ -42,5 +42,6 @@ namespace OnlineShop.DAL
 		public IProductRepo ProductRepo() => new ProductRepo(Context);
 		public IRoleRepo RoleRepo() => new RoleRepo(Context);
 		public IUserRepo UserRepo() => new UserRepo(Context);
+		public void SaveChanges() => Context.SaveChanges();
 	}
 }

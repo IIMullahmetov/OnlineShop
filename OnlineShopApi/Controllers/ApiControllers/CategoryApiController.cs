@@ -13,7 +13,7 @@ namespace OnlineShopApi.Controllers.ApiControllers
 	{
 		[HttpPost]
 		[Route("edit_category")]
-		public IHttpActionResult EditCategory([FromBody]AddProductToBasketRequest request)
+		public IHttpActionResult EditCategory([FromBody]EditCategoryRequest request)
 		{
 			return Ok();
 		}

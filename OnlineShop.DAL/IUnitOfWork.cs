@@ -10,5 +10,6 @@ namespace OnlineShop.DAL
 		IProductRepo ProductRepo();
 		IRoleRepo RoleRepo();
 		IUserRepo UserRepo();
+		void SaveChanges();
 	}
 }

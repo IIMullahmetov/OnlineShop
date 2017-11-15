@@ -17,7 +17,8 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			IdentityUser identityUser = context.Users.FirstOrDefault(u => u.UserName == name) ?? throw new System.Exception();
 			context.Dispose();
 			User user = UnitOfWork.UserRepo().Get(u => u.Guid == identityUser.Id).FirstOrDefault();
-			return null;
+			UnitOfWork = new UnitOfWork(user.Role.Connection);
+			return user;
 		}
 	}
 }

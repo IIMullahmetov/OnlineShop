@@ -7,6 +7,14 @@
 
 	public class AddProductToBasketRequest : PostRequestsBase
 	{
+	}
+
+	public class DeleteProductFromBasketRequest : PostRequestsBase
+	{
+	}
+
+	public class EditCategoryRequest : PostRequestsBase
+	{
 		public string Name { get; set; }
 	}
 }
