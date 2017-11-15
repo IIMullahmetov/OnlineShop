@@ -67,14 +67,13 @@
   <ItemGroup>
     <Compile Include="Context.cs" />
     <Compile Include="Entities\BaseEntity.cs" />
-    <Compile Include="Entities\Basket.cs" />
-    <Compile Include="Entities\BasketProduct.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderProduct.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserProduct.cs" />
     <Compile Include="GenericRepo.cs" />
     <Compile Include="IGenericRepo.cs" />
     <Compile Include="IUnitOfWork.cs" />

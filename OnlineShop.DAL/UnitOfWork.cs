@@ -37,11 +37,11 @@ namespace OnlineShop.DAL
 			GC.SuppressFinalize(this);
 		}
 
-		public ICategoryRepo CategoryRepo() => new CategoryRepo(Context);
-		public IOrderRepo OrderRepo() => new OrderRepo(Context);
-		public IProductRepo ProductRepo() => new ProductRepo(Context);
-		public IRoleRepo RoleRepo() => new RoleRepo(Context);
-		public IUserRepo UserRepo() => new UserRepo(Context);
+		public ICategoryRepo CategoryRepo => new CategoryRepo(Context);
+		public IOrderRepo OrderRepo => new OrderRepo(Context);
+		public IProductRepo ProductRepo => new ProductRepo(Context);
+		public IRoleRepo RoleRepo => new RoleRepo(Context);
+		public IUserRepo UserRepo => new UserRepo(Context);
 		public void SaveChanges() => Context.SaveChanges();
 	}
 }

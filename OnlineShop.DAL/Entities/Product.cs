@@ -9,7 +9,7 @@ namespace OnlineShop.DAL.Entities
 		public Product()
 		{
 			Orders = new HashSet<OrderProduct>();
-			Baskets = new HashSet<BasketProduct>();
+			Users = new HashSet<UserProduct>();
 		}
 
 		public string Name { get; set; }
@@ -28,6 +28,6 @@ namespace OnlineShop.DAL.Entities
 
 		public virtual ICollection<OrderProduct> Orders { get; set; }
 
-		public virtual ICollection<BasketProduct> Baskets { get; set; }
+		public virtual ICollection<UserProduct> Users { get; set; }
 	}
 }

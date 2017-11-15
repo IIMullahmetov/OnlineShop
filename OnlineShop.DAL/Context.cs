@@ -22,12 +22,11 @@ namespace OnlineShop.DAL
 
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Category>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Role>());
-			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Basket>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<User>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Product>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Order>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<OrderProduct>());
-			modelBuilder.Configurations.Add(new EntityTypeConfiguration<BasketProduct>());
+			modelBuilder.Configurations.Add(new EntityTypeConfiguration<UserProduct>());
 		}
 	}
 }

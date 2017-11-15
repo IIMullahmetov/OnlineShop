@@ -40,4 +40,15 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public int Count { get; set; }
 	}
+
+	public class GetBasketViewModel
+	{
+		public int Id { get; set; }
+
+		public string Name { get; set; }
+
+		public int Count { get; set; }
+
+		public float PricePerUnit { get; set; }
+	}
 }

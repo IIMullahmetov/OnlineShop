@@ -235,6 +235,7 @@
     <Compile Include="Controllers\ApiControllers\BaseApiController.cs" />
     <Compile Include="Controllers\ApiControllers\CategoryApiController.cs" />
     <Compile Include="Controllers\ApiControllers\ProductApiController.cs" />
+    <Compile Include="Controllers\BaseMvcController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -319,9 +320,11 @@
     <Content Include="Views\Home\CategoryList.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Registration.cshtml" />
+    <Content Include="Views\Home\Basket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\BaseMvc\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -7,6 +7,12 @@ namespace OnlineShop.DAL.Entities
 {
 	public class User : BaseEntity
 	{
+		public User()
+		{
+			Products = new HashSet<UserProduct>();
+			Orders = new HashSet<Order>();
+		}
+
 		public string Guid { get; set; }
 
 		[Index(name: "email", IsUnique = true)]
@@ -33,10 +39,8 @@ namespace OnlineShop.DAL.Entities
 		[ForeignKey("RoleId")]
 		public virtual Role Role { get; set; }
 
-		public int BasketId { get; set; }
-
-		[ForeignKey("BasketId")]
-		public virtual Basket Basket { get; set; }
 		public virtual ICollection<Order> Orders { get; set; }
+
+		public virtual ICollection<UserProduct> Products { get; set; }
 	}
 }

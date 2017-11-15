@@ -14,9 +14,8 @@ using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
-	public class AccountController : Controller
+	public class AccountController : BaseMvcController
 	{
-		private IUnitOfWork unitOfWork = new UnitOfWork();
 		private ApplicationUserManager UserManager
 			=> HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
 
@@ -72,9 +71,8 @@ namespace OnlineShopApi.Controllers
 				Mapper.Initialize(cfg => cfg.CreateMap<RegistrationViewModel, User>());
 				User user = Mapper.Map(viewModel, typeof(RegistrationViewModel), typeof(User)) as User;
 				user.Guid = identityUser.Id;
-				user.Basket = new Basket();
-				user.Role = unitOfWork.RoleRepo().Get(r => r.Login == "user").FirstOrDefault();
-				unitOfWork.UserRepo().Create(user);
+				user.Role = UnitOfWork.RoleRepo.Get(r => r.Login == "user").FirstOrDefault();
+				UnitOfWork.UserRepo.Create(user);
 				return RedirectToAction("Home", "ProductList");
 			}
 			foreach (string error in result.Errors)

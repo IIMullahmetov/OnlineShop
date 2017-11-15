@@ -19,14 +19,14 @@ namespace OnlineShop.Controllers
 		[HttpGet]
 		public ActionResult ProductList(int id = 1)
 		{
-			IEnumerable<ProductListViewModel> result = unitOfWork.ProductRepo().Get().Select(p => new ProductListViewModel
+			IEnumerable<ProductListViewModel> result = unitOfWork.ProductRepo.Get().Select(p => new ProductListViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
 				Category = p.Category.Name,
 				Price = p.Price
 			});
-			ViewData["categories"] = unitOfWork.CategoryRepo().Get();
+			ViewData["categories"] = unitOfWork.CategoryRepo.Get();
 			return View(result.ToPagedList(id, 10));
 		}
 

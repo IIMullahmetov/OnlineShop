@@ -9,10 +9,8 @@ using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseMvcController
 	{
-		private UnitOfWork unitOfWork = new UnitOfWork();
-
 		public ActionResult Index()
 		{
 			ViewBag.Title = "Home Page";
@@ -23,8 +21,7 @@ namespace OnlineShopApi.Controllers
 		[Authorize]
 		public ActionResult ProductList(int id = 1)
 		{
-			var r = HttpContext.User.Identity.Name;
-			IEnumerable<GetProductListViewModel> result = unitOfWork.ProductRepo().Get().Select(p => new GetProductListViewModel
+			IEnumerable<GetProductListViewModel> result = UnitOfWork.ProductRepo.Get().Select(p => new GetProductListViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
@@ -36,7 +33,7 @@ namespace OnlineShopApi.Controllers
 
 		public ActionResult Product(int id)
 		{
-			IProductRepo repo = unitOfWork.ProductRepo();
+			IProductRepo repo = UnitOfWork.ProductRepo;
 			Product product = repo.FindById(id);
 			return View(product);
 		}
@@ -50,7 +47,7 @@ namespace OnlineShopApi.Controllers
 		[HttpPost]
 		public RedirectResult CreateProduct(CreateProductViewModel request)
 		{
-			IProductRepo repo = unitOfWork.ProductRepo();
+			IProductRepo repo = UnitOfWork.ProductRepo;
 			try
 			{
 				Product product = new Product
@@ -73,8 +70,17 @@ namespace OnlineShopApi.Controllers
 		[HttpGet]
 		public ActionResult CategoryList()
 		{
-			ICategoryRepo repo = unitOfWork.CategoryRepo();
+			ICategoryRepo repo = UnitOfWork.CategoryRepo;
 			return View(repo.Get());
+		}
+
+		[HttpGet]
+		public ActionResult Basket()
+		{
+			//IEnumerable<GetBasketViewModel> basket = UnitOfWork
+			//	.UserRepo
+			//	.Get()
+			return View();
 		}
 	}
 }
