@@ -8,12 +8,12 @@ namespace OnlineShop.DAL
 	{
 		public Context() : base("admin")
 		{
-			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
+			Database.SetInitializer<Context>(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}
 
 		public Context(string connection) : base(connection)
 		{
-			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
+			Database.SetInitializer<Context>(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)

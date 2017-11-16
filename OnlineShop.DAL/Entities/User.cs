@@ -28,9 +28,9 @@ namespace OnlineShop.DAL.Entities
 		[MinLength(length: 2, ErrorMessage = "Длина не должна быть меньше 2 символов")]
 		public string LastName { get; set; }
 
-		public DateTimeOffset CreateDt { get; set; }
+		//public DateTime CreateDt { get; set; }
 
-		public DateTime BirthDt { get; set; }
+		//public DateTime BirthDt { get; set; }
 
 		public bool Gender { get; set; }
 

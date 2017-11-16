@@ -1,5 +1,4 @@
-﻿using OnlineShop.DAL;
-using OnlineShop.DAL.Entities;
+﻿using OnlineShop.DAL.Entities;
 using OnlineShop.DAL.Repositories;
 using OnlineShopApi.ViewModels.Product;
 using PagedList;
@@ -21,11 +20,12 @@ namespace OnlineShopApi.Controllers
 		[Authorize]
 		public ActionResult ProductList(int id = 1)
 		{
+			IEnumerable<Product> r = UnitOfWork.ProductRepo.Get();
 			IEnumerable<GetProductListViewModel> result = UnitOfWork.ProductRepo.Get().Select(p => new GetProductListViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
-				Category = p.Category.Name,
+				Category = UnitOfWork.CategoryRepo.FindById(p.CategoryId).Name,
 				Price = p.Price
 			});
 			return View(result.ToPagedList(id, 10));
@@ -41,32 +41,34 @@ namespace OnlineShopApi.Controllers
 		[HttpGet]
 		public ActionResult CreateProduct()
 		{
+			ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
 			return View();
 		}
 
 		[HttpPost]
-		public RedirectResult CreateProduct(CreateProductViewModel request)
+		public ActionResult CreateProduct(CreateProductViewModel viewModel)
 		{
-			IProductRepo repo = UnitOfWork.ProductRepo;
+			Category category = UnitOfWork.CategoryRepo.FindById(viewModel.Category);
 			try
 			{
 				Product product = new Product
 				{
-					Name = request.Name,
-					Description = request.Description,
-					Category = request.Category,
-					Price = request.Price,
-					Count = request.Count
+					Name = viewModel.Name,
+					Price = viewModel.Price,
+					Description = viewModel.Description,
+					Count = viewModel.Count,
+					Category = category
 				};
-				repo.Create(product);
-				return Redirect("/Home/ProductList");
+				UnitOfWork.ProductRepo.Create(product);
+				return RedirectToAction("ProductList", "Home");
 			}
 			catch
 			{
-				return null;
+				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+				return View(viewModel);
 			}
 		}
-
+		
 		[HttpGet]
 		public ActionResult CategoryList()
 		{
@@ -75,12 +77,61 @@ namespace OnlineShopApi.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult CreateCategory()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult CreateCategory(CreateProductViewModel viewModel)
+		{
+			try
+			{
+				UnitOfWork.CategoryRepo.Create(new Category { Name = viewModel.Name });
+				return RedirectToAction("CategoryList", "Home");
+			}
+			catch
+			{
+				return View(viewModel);
+			}
+		}
+
+		[HttpGet]
 		public ActionResult Basket()
 		{
-			//IEnumerable<GetBasketViewModel> basket = UnitOfWork
-			//	.UserRepo
-			//	.Get()
-			return View();
+			User user = GetCurrentUser();
+			return View(user.Products.Select(p => new GetBasketViewModel
+			{
+				Id = p.ProductId,
+				Name = p.Product.Name,
+				Count = p.Count,
+				PricePerUnit = p.Product.Price
+			}));
+		}
+
+		[HttpPost]
+		public ActionResult Buy()
+		{
+			User user = GetCurrentUser();
+			try
+			{
+				Order order = new Order()
+				{
+					Products = user.Products.Select(p => new OrderProduct
+					{
+						ProductId = p.ProductId,
+						Count = p.Count
+					}).ToList()
+				};
+				UnitOfWork.OrderRepo.Create(order);
+				user.Products.Clear();
+				UnitOfWork.SaveChanges();
+				return RedirectToAction("ProductList", "Home");
+			}
+			catch
+			{
+				return RedirectToAction("Basket", "Home");
+			}
 		}
 	}
 }

@@ -14,8 +14,6 @@ namespace OnlineShop.DAL.Entities
 
 		public DateTimeOffset CreateDt { get; set; }
 
-		public int Count { get; set; }
-
 		public int UserId { get; set; }
 
 		[ForeignKey("UserId")]

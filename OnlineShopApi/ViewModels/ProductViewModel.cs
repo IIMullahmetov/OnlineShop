@@ -1,4 +1,5 @@
 ﻿using OnlineShop.DAL.Entities;
+using OnlineShopApi.ViewModels.Categories;
 
 namespace OnlineShopApi.ViewModels.Product
 {
@@ -36,7 +37,7 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public float Price { get; set; }
 
-		public Category Category { get; set; }
+		public int Category { get; set; }
 
 		public int Count { get; set; }
 	}
