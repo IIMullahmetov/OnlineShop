@@ -57,7 +57,6 @@ namespace OnlineShopApi.Controllers
 		}
 
 		[HttpPost]
-		[Authorize]
 		public ActionResult Registration(RegistrationViewModel viewModel)
 		{
 			IdentityUser identityUser = new IdentityUser()
@@ -73,7 +72,7 @@ namespace OnlineShopApi.Controllers
 				user.Guid = identityUser.Id;
 				user.Role = UnitOfWork.RoleRepo.Get(r => r.Login == "user").FirstOrDefault();
 				UnitOfWork.UserRepo.Create(user);
-				return RedirectToAction("Home", "ProductList");
+				return RedirectToAction("ProductList", "Home");
 			}
 			foreach (string error in result.Errors)
 			{

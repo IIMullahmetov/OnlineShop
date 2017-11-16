@@ -2,9 +2,7 @@
 using OnlineShop.DAL;
 using OnlineShop.DAL.Entities;
 using OnlineShopApi.Models;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
