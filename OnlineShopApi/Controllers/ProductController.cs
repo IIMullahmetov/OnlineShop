@@ -8,9 +8,9 @@ using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
+	[Authorize]
 	public class ProductController : BaseMvcController
     {
-		[Authorize]
 		public ActionResult List(int id = 1)
 		{
 			List<Product> products = UnitOfWork.ProductRepo.Get().ToList();
@@ -24,7 +24,7 @@ namespace OnlineShopApi.Controllers
 			return View(result.ToPagedList(id, 10));
 		}
 
-		public ActionResult Product(int id)
+		public ActionResult Detail(int id)
 		{
 			IProductRepo repo = UnitOfWork.ProductRepo;
 			Product product = repo.FindById(id);

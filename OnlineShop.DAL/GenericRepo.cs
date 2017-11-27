@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnlineShop.DAL
 {
@@ -26,7 +25,7 @@ namespace OnlineShop.DAL
 		public IEnumerable<TEntity> Get(int page) => _context.Set<TEntity>().OrderBy(t => t.Id).Skip((page - 1) * 10).Take(10);
 
 
-		public TEntity FindById(int id) => _context.Set<TEntity>().Find(id);
+		public TEntity FindById(int id) => _context.Set<TEntity>().FirstOrDefault(t => t.Id == id);
 
 		public void Create(TEntity item)
 		{

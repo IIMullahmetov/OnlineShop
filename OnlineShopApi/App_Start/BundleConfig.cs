@@ -11,6 +11,15 @@ namespace OnlineShopApi
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
 						"~/Scripts/jquery-{version}.js"));
 
+
+			// Jquery validator & unobstrusive ajax  
+			bundles.Add(new ScriptBundle("~/bundles/jqueryval")
+				.Include("~/Scripts/jquery.unobtrusive-ajax.js", 
+				"~/Scripts/jquery.unobtrusive-ajax.min.js", 
+				"~/Scripts/jquery.validate*", 
+				"~/Scripts/jquery.validate.unobtrusive.js", 
+				"~/Scripts/jquery.validate.unobtrusive.min.js"));
+
 			// Используйте версию Modernizr для разработчиков, чтобы учиться работать. Когда вы будете готовы перейти к работе,
 			// готово к выпуску, используйте средство сборки по адресу https://modernizr.com, чтобы выбрать только необходимые тесты.
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

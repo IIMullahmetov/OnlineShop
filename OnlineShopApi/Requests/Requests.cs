@@ -16,9 +16,4 @@
 	public class DeleteOneProductInstanceFromBasketRequest : PostRequestsBase
 	{
 	}
-
-	public class EditCategoryRequest : PostRequestsBase
-	{
-		public string Name { get; set; }
-	}
 }

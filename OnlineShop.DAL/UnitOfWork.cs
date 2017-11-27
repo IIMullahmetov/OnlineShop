@@ -16,7 +16,7 @@ namespace OnlineShop.DAL
 
 		public UnitOfWork(string connection)
 		{
-			Context = new Context();
+			Context = new Context(connection);
 		}
 
 		public virtual void Dispose(bool disposing)

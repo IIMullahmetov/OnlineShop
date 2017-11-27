@@ -35,9 +35,8 @@
             @Html.DisplayFor(modelItem => item.PricePerUnit)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("+", "add_product_to_basket", new { id=item.Id }) |
+            @Html.ActionLink("-", "delete_product_from_basket", new { id=item.Id })
         </td>
     </tr>
 }

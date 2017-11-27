@@ -8,12 +8,12 @@ namespace OnlineShop.DAL
 	{
 		public Context() : base("admin")
 		{
-			Database.SetInitializer<Context>(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}
 
 		public Context(string connection) : base(connection)
 		{
-			Database.SetInitializer<Context>(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
+			Database.SetInitializer(new MigrateDatabaseToLatestVersion<Context, Migrations.Configuration>());
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -25,8 +25,6 @@ namespace OnlineShop.DAL
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<User>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Product>());
 			modelBuilder.Configurations.Add(new EntityTypeConfiguration<Order>());
-			modelBuilder.Configurations.Add(new EntityTypeConfiguration<OrderProduct>());
-			modelBuilder.Configurations.Add(new EntityTypeConfiguration<UserProduct>());
 		}
 	}
 }

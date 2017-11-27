@@ -16,10 +16,6 @@ namespace OnlineShop.DAL.Entities
 
 		public string Connection { get; set; }
 
-		public string Login { get; set; }
-		
-		public string Password { get; set; }
-
 		public virtual ICollection<User> Users { get; set; }
 	}
 }

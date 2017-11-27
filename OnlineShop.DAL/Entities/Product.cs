@@ -8,14 +8,16 @@ namespace OnlineShop.DAL.Entities
 	{
 		public Product()
 		{
-			Orders = new HashSet<OrderProduct>();
-			Users = new HashSet<UserProduct>();
+			Orders = new HashSet<Order>();
+			Users = new HashSet<User>();
 		}
 
 		public string Name { get; set; }
 
 		[MaxLength(length: 128, ErrorMessage = "Длина не должна превышать 128 символов")]
 		public string Description { get; set; }
+
+		public byte[] Image { get; set; }
 
 		public float Price { get; set; }
 
@@ -26,8 +28,8 @@ namespace OnlineShop.DAL.Entities
 		[ForeignKey("CategoryId")]
 		public virtual Category Category { get; set; }
 
-		public virtual ICollection<OrderProduct> Orders { get; set; }
+		public virtual ICollection<Order> Orders { get; set; }
 
-		public virtual ICollection<UserProduct> Users { get; set; }
+		public virtual ICollection<User> Users { get; set; }
 	}
 }

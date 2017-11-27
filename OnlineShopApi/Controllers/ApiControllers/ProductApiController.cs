@@ -1,12 +1,14 @@
 ﻿using OnlineShop.DAL.Entities;
 using OnlineShop.DAL.Repositories;
 using OnlineShopApi.Requests;
+using OnlineShopApi.Responses;
 using System.Linq;
 using System.Web.Http;
 
 namespace OnlineShopApi.Controllers.ApiControllers
 {
 	[RoutePrefix("product")]
+	[Authorize]
 	public class ProductApiController : BaseApiController
 	{
 
@@ -21,17 +23,14 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			Product product = repo.FindById(request.Id);
 			try
 			{
-				if (user.Products.Any(p => p.ProductId == product.Id))
+				user.Products.Add(product);
+				UnitOfWork.SaveChanges();
+				AddProductToBasketResponse response = new AddProductToBasketResponse
 				{
-					user.Products.First(p => p.ProductId == product.Id).Count++;
-					UnitOfWork.SaveChanges();
-				}
-				else
-				{
-					user.Products.Add(new UserProduct { Product = product });
-					UnitOfWork.SaveChanges();
-				}
-				return Ok();
+					Count = user.Products.FirstOrDefault(p => p.Id == request.Id).Count,
+					TotalCount = user.Products.Count
+				};
+				return Ok(response);
 			}
 			catch
 			{
@@ -45,13 +44,18 @@ namespace OnlineShopApi.Controllers.ApiControllers
 		{
 			User user = GetCurrentUser();
 			if (user == null) return Unauthorized();
-			UserProduct basketProduct = user.Products.FirstOrDefault(p => p.ProductId == request.Id);
+			Product basketProduct = user.Products.FirstOrDefault(p => p.Id == request.Id);
 			if (basketProduct == null) return BadRequest();
 			try
 			{
 				user.Products.Remove(basketProduct);
 				UnitOfWork.SaveChanges();
-				return Ok();
+				DeleteProductFromBasketResponse response = new DeleteProductFromBasketResponse
+				{
+					Count = 0,
+					TotalCount = user.Products.Count
+				};
+				return Ok(response);
 			}
 			catch
 			{
@@ -65,17 +69,18 @@ namespace OnlineShopApi.Controllers.ApiControllers
 		{
 			User user = GetCurrentUser();
 			if (user == null) return Unauthorized();
-			UserProduct basketProduct = user.Products.FirstOrDefault(p => p.ProductId == request.Id);
-			if (basketProduct == null) return BadRequest();
+			Product product = user.Products.FirstOrDefault(p => p.Id == request.Id);
+			if (product == null) return BadRequest();
 			try
 			{
-				basketProduct.Count--;
-				if(basketProduct.Count < 1)
-				{
-					user.Products.Remove(basketProduct);
-				}
+				user.Products.Remove(product);
 				UnitOfWork.SaveChanges();
-				return Ok();
+				DeleteOneProductInstanceFromBasketResponse response = new DeleteOneProductInstanceFromBasketResponse
+				{
+					Count = product.Count,
+					TotalCount = user.Products.Count
+				};
+				return Ok(response);
 			}
 			catch
 			{

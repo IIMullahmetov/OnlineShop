@@ -4,6 +4,38 @@
     ViewBag.Title = "ProductList";
 }
 
+@section scripts{
+	<script>
+		$(function () {
+			//$('#btn-all').on('click', function () {
+			//	$.get('/api/movies', function (data) {
+			//		$('#result').empty();
+			//		$.each(data, function (i, v) {
+			//			$('#result').html($('#result').html() + v.Title + '<br />');
+			//		});
+			//	}, 'json');
+			//});
+			$('#btn').on('click', Add = function (id) {
+				$.ajax({
+					type: 'POST',
+					url: '../../product/add_product_to_basket',
+					data: {
+						"id": id
+					}
+				});
+			});
+			$('#btn-delete').on('click', function Delete(id) {
+				$.ajax({
+					type: 'Delete',
+					url: '/api/movies?id=' + $('#MovieId').val()
+				});
+			});
+		});
+</script>
+
+
+}
+
 <h2>ProductList</h2>
 
 <p>
@@ -37,7 +69,12 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id }) |
+			<input type="button" value="+" onclick="Add(@item.Id);" />
+			<input type="button" value="-" onclick="Delete(@item.Id);" />
+
+			@*@Html.ActionLink("+", "add_product_to_basket", new { id = item.Id }) |*@
+			@*@Html.ActionLink("-", "delete_product_from_basket", new { id = item.Id })*@ 
         </td>
     </tr>
 }
@@ -45,4 +82,5 @@
 </table>
 Страница @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) из @Model.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+@Html.PagedListPager(Model, id => Url.Action("List", "Product",  new { id } ))
+

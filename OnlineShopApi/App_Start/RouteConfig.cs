@@ -14,6 +14,11 @@ namespace OnlineShopApi
 				url: "{controller}/{action}/{id}",
 				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
 			);
+			routes.MapRoute(
+				name: "Paging",
+				url: "{controller}/{action}/{page}",
+				defaults: new { controller = "Product", action = "List", page = UrlParameter.Optional }
+				);
 		}
 	}
 }

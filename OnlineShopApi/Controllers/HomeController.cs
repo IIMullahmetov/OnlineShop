@@ -1,64 +1,34 @@
 ﻿using OnlineShop.DAL.Entities;
-using OnlineShop.DAL.Repositories;
-using OnlineShopApi.ViewModels.Categories;
 using OnlineShopApi.ViewModels.Product;
-using PagedList;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
+	[Authorize]
 	public class HomeController : BaseMvcController
 	{
+
 		public ActionResult Index()
 		{
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
 			ViewBag.Title = "Home Page";
-
 			return View();
-		}
-		
-		[HttpGet]
-		public ActionResult CategoryList()
-		{
-			ICategoryRepo repo = UnitOfWork.CategoryRepo;
-			return View(repo.Get().Select(c => new GetCategoryListViewModel
-			{
-				Id = c.Id,
-				Name = c.Name
-			}));
-		}
-
-		[HttpGet]
-		public ActionResult CreateCategory()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		public ActionResult CreateCategory(CreateProductViewModel viewModel)
-		{
-			try
-			{
-				UnitOfWork.CategoryRepo.Create(new Category { Name = viewModel.Name });
-				return RedirectToAction("CategoryList", "Home");
-			}
-			catch
-			{
-				return View(viewModel);
-			}
 		}
 
 		[HttpGet]
 		public ActionResult Basket()
 		{
 			User user = GetCurrentUser();
-			return View(user.Products.Select(p => new GetBasketViewModel
+			if (user == null) return RedirectToAction("Login", "Account");
+			ViewBag.ProductCount = user.Products.Count;
+			return View(user.Products.Distinct().Select(p => new GetBasketViewModel
 			{
-				Id = p.ProductId,
-				Name = p.Product.Name,
-				Count = p.Count,
-				PricePerUnit = p.Product.Price
+				Id = p.Id,
+				Name = p.Name,
+				Count = user.Products.Count(c => c.Id == p.Id),
+				PricePerUnit = p.Price
 			}));
 		}
 
@@ -66,16 +36,14 @@ namespace OnlineShopApi.Controllers
 		public ActionResult Buy()
 		{
 			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
 			try
 			{
-				Order order = new Order()
+				Order order = new Order();
+				foreach(Product product in user.Products)
 				{
-					Products = user.Products.Select(p => new OrderProduct
-					{
-						ProductId = p.ProductId,
-						Count = p.Count
-					}).ToList()
-				};
+					order.Products.Add(product);
+				}
 				UnitOfWork.OrderRepo.Create(order);
 				user.Products.Clear();
 				UnitOfWork.SaveChanges();
@@ -86,7 +54,5 @@ namespace OnlineShopApi.Controllers
 				return RedirectToAction("Basket", "Home");
 			}
 		}
-
-
 	}
 }

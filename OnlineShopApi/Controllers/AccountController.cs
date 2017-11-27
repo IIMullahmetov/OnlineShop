@@ -3,10 +3,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using OnlineShop.DAL;
 using OnlineShop.DAL.Entities;
 using OnlineShopApi.Models;
 using OnlineShopApi.ViewModels.Identity;
+using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
+	[AllowAnonymous]
 	public class AccountController : BaseMvcController
 	{
 		private ApplicationUserManager UserManager
@@ -67,12 +68,13 @@ namespace OnlineShopApi.Controllers
 			IdentityResult result = UserManager.Create(identityUser, viewModel.Password);
 			if (result.Succeeded)
 			{
-				Mapper.Initialize(cfg => cfg.CreateMap<RegistrationViewModel, User>());
 				User user = Mapper.Map(viewModel, typeof(RegistrationViewModel), typeof(User)) as User;
 				user.Guid = identityUser.Id;
-				user.Role = UnitOfWork.RoleRepo.Get(r => r.Login == "user").FirstOrDefault();
+				Role role = UnitOfWork.RoleRepo.Get(r => r.Name == "user").FirstOrDefault();
+				user.Role = role;
+				user.CreateDt = DateTime.Now;
 				UnitOfWork.UserRepo.Create(user);
-				return RedirectToAction("ProductList", "Home");
+				return RedirectToAction("List", "Product");
 			}
 			foreach (string error in result.Errors)
 			{

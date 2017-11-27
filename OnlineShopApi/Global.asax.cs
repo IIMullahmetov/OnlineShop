@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using AutoMapper;
+using OnlineShop.DAL.Entities;
+using OnlineShopApi.ViewModels.Identity;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -18,6 +17,12 @@ namespace OnlineShopApi
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+			RegisterMapper();
+		}
+
+		private void RegisterMapper()
+		{
+			Mapper.Initialize(cfg => cfg.CreateMap<RegistrationViewModel, User>());
 		}
 	}
 }
