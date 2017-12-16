@@ -5,6 +5,7 @@ namespace OnlineShop.DAL
 {
 	public interface IUnitOfWork : IDisposable
 	{
+		Context Context { get; set; }
 		ICategoryRepo CategoryRepo { get; }
 		IOrderRepo OrderRepo { get; }
 		IProductRepo ProductRepo { get; }

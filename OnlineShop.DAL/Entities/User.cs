@@ -16,8 +16,9 @@ namespace OnlineShop.DAL.Entities
 		public string Guid { get; set; }
 
 		[Index(name: "email", IsUnique = true)]
+		[EmailAddress]
 		public string Email { get; set; }
-
+		
 		public string Password { get; set;}
 
 		[MaxLength(length: 16, ErrorMessage = "Длина не должна превышать 16 символов")]

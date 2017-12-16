@@ -12,16 +12,14 @@ namespace OnlineShop.DAL.Entities
 			Users = new HashSet<User>();
 		}
 
+		[MaxLength(length: 16, ErrorMessage = "Длина не должна превышать 16 символов")]
+		[MinLength(length: 4, ErrorMessage = "Длина не должна быть меньше 4 символов")]
 		public string Name { get; set; }
 
 		[MaxLength(length: 128, ErrorMessage = "Длина не должна превышать 128 символов")]
 		public string Description { get; set; }
-
-		public byte[] Image { get; set; }
-
-		public float Price { get; set; }
-
-		public int Count { get; set; }
+		
+		public int Price { get; set; }
 
 		public int CategoryId { get; set; }
 

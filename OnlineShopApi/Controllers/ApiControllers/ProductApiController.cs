@@ -23,14 +23,8 @@ namespace OnlineShopApi.Controllers.ApiControllers
 			Product product = repo.FindById(request.Id);
 			try
 			{
-				user.Products.Add(product);
-				UnitOfWork.SaveChanges();
-				AddProductToBasketResponse response = new AddProductToBasketResponse
-				{
-					Count = user.Products.FirstOrDefault(p => p.Id == request.Id).Count,
-					TotalCount = user.Products.Count
-				};
-				return Ok(response);
+				UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform add_product_to_basket({user.Id}, {product.Id}); end $$");
+				return Ok();
 			}
 			catch
 			{
@@ -77,7 +71,7 @@ namespace OnlineShopApi.Controllers.ApiControllers
 				UnitOfWork.SaveChanges();
 				DeleteOneProductInstanceFromBasketResponse response = new DeleteOneProductInstanceFromBasketResponse
 				{
-					Count = product.Count,
+					Count = user.Products.Count(p => p.Id == request.Id),
 					TotalCount = user.Products.Count
 				};
 				return Ok(response);

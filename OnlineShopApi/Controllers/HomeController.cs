@@ -27,7 +27,7 @@ namespace OnlineShopApi.Controllers
 			{
 				Id = p.Id,
 				Name = p.Name,
-				Count = user.Products.Count(c => c.Id == p.Id),
+				Count = UnitOfWork.Context.Database.ExecuteSqlCommand($"do $$ begin perform dbo.get_product_count({user.Id}, {p.Id}); end $$"),
 				PricePerUnit = p.Price
 			}));
 		}
@@ -40,14 +40,13 @@ namespace OnlineShopApi.Controllers
 			try
 			{
 				Order order = new Order();
-				foreach(Product product in user.Products)
+				UnitOfWork.OrderRepo.Create(order);
+				foreach (Product product in user.Products)
 				{
 					order.Products.Add(product);
 				}
-				UnitOfWork.OrderRepo.Create(order);
-				user.Products.Clear();
 				UnitOfWork.SaveChanges();
-				return RedirectToAction("ProductList", "Home");
+				return RedirectToAction("List", "Product");
 			}
 			catch
 			{

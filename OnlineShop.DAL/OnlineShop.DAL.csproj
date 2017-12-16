@@ -88,6 +88,18 @@
     <Compile Include="Migrations\201711261921030_DeletedLoginAndPasswordFromRoles.Designer.cs">
       <DependentUpon>201711261921030_DeletedLoginAndPasswordFromRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711281827494_Update.cs" />
+    <Compile Include="Migrations\201711281827494_Update.Designer.cs">
+      <DependentUpon>201711281827494_Update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711291903343_ChangedPriceType.cs" />
+    <Compile Include="Migrations\201711291903343_ChangedPriceType.Designer.cs">
+      <DependentUpon>201711291903343_ChangedPriceType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712160921164_Consolidation.cs" />
+    <Compile Include="Migrations\201712160921164_Consolidation.Designer.cs">
+      <DependentUpon>201712160921164_Consolidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ICategoryRepo.cs" />
@@ -121,6 +133,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711261921030_DeletedLoginAndPasswordFromRoles.resx">
       <DependentUpon>201711261921030_DeletedLoginAndPasswordFromRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711281827494_Update.resx">
+      <DependentUpon>201711281827494_Update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711291903343_ChangedPriceType.resx">
+      <DependentUpon>201711291903343_ChangedPriceType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712160921164_Consolidation.resx">
+      <DependentUpon>201712160921164_Consolidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

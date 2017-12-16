@@ -45,7 +45,7 @@ namespace OnlineShopApi.Controllers
 					ClaimsIdentity claim = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
 					AuthenticationManager.SignOut();
 					AuthenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claim);
-					return RedirectToAction("ProductList", "Home");
+					return RedirectToAction("List", "Product");
 				}
 			}
 			return View(viewModel);

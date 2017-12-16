@@ -1,7 +1,8 @@
 ﻿using OnlineShop.DAL.Entities;
 using OnlineShop.DAL.Repositories;
 using OnlineShopApi.ViewModels.Categories;
-using OnlineShopApi.ViewModels.Product;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -11,7 +12,7 @@ namespace OnlineShopApi.Controllers
 	public class CategoryController : BaseMvcController
     {
 		[HttpGet]
-		public ActionResult List(string name = null, int? category = 0)
+		public ActionResult List(string name = null)
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
@@ -26,11 +27,13 @@ namespace OnlineShopApi.Controllers
 		[HttpGet]
 		public ActionResult Create()
 		{
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
 			return View();
 		}
 
 		[HttpPost]
-		public ActionResult Create(CreateProductViewModel viewModel)
+		public ActionResult Create(CreateCategoryViewModel viewModel)
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
@@ -39,18 +42,29 @@ namespace OnlineShopApi.Controllers
 				UnitOfWork.CategoryRepo.Create(new Category { Name = viewModel.Name });
 				return RedirectToAction("List");
 			}
-			catch
+			catch(DbEntityValidationException e)
 			{
+				IEnumerable<string> messages = e.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
+				foreach (string message in messages)
+				{
+					ModelState.AddModelError("", message);
+				}
 				return View(viewModel);
 			}
 		}
 
 		[HttpGet]
-		public ActionResult Edit()
+		public ActionResult Edit(int id)
 		{
 			User user = GetCurrentUser();
 			if (user == null) return RedirectToAction("Login", "Account");
-			return View();
+			Category category = UnitOfWork.CategoryRepo.FindById(id);
+			EditCategoryViewModel viewModel = new EditCategoryViewModel
+			{
+				Id = category.Id,
+				Name = category.Name
+			};
+			return View(viewModel);
 		}
 
 		[HttpPost]
@@ -64,8 +78,13 @@ namespace OnlineShopApi.Controllers
 				category.Name = viewModel.Name;
 				return RedirectToAction("List");
 			}
-			catch
+			catch (DbEntityValidationException e)
 			{
+				IEnumerable<string> messages = e.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
+				foreach (string message in messages)
+				{
+					ModelState.AddModelError("", message);
+				}
 				return View(viewModel);
 			}
 		}

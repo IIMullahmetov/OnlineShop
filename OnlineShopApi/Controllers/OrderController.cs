@@ -1,4 +1,5 @@
 ﻿using OnlineShop.DAL.Entities;
+using OnlineShop.DAL.Repositories;
 using OnlineShopApi.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,9 @@ namespace OnlineShopApi.Controllers
 				Id = o.Id,
 				Count = o.Products.Count,
 				CreateDt = o.CreateDt,
-				//TODO !!!
-				//Price = o.Products.
+				Price = o.Products.Sum(p => p.Price * o.Products.Count(pr => pr.Id == p.Id))
 			}).ToList();
+			IProductRepo repo = UnitOfWork.ProductRepo;
 			return View(orders);
 		}
 

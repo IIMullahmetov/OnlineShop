@@ -2,25 +2,44 @@
 using OnlineShop.DAL.Repositories;
 using OnlineShopApi.ViewModels.Product;
 using PagedList;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity.Core;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 
 namespace OnlineShopApi.Controllers
 {
 	[Authorize]
 	public class ProductController : BaseMvcController
-    {
-		public ActionResult List(int id = 1)
+	{
+		public ActionResult List(int id = 1, string product = null, int? category = null)
 		{
-			List<Product> products = UnitOfWork.ProductRepo.Get().ToList();
+			IProductRepo repo = UnitOfWork.ProductRepo;
+			List<Product> products = null;
+			if (product != null && category != null)
+				products = repo.Get(p => p.CategoryId == category.Value && p.Name.Contains(product)).ToList();
+			else
+				if (product != null)
+					products = repo.Get(p => p.Name.Contains(product)).ToList();
+				else
+					if (category != null)
+						products = repo.Get(p => p.CategoryId == category.Value).ToList();
+					else
+						products = repo.Get().ToList();
 			IEnumerable<GetProductListViewModel> result = products.Select(p => new GetProductListViewModel
 			{
 				Id = p.Id,
 				Name = p.Name,
 				Category = p.Category.Name,
-				Price = p.Price
+				Price = p.Price,
 			});
+			ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
 			return View(result.ToPagedList(id, 10));
 		}
 
@@ -41,22 +60,40 @@ namespace OnlineShopApi.Controllers
 		[HttpPost]
 		public ActionResult Create(CreateProductViewModel viewModel)
 		{
-			Category category = UnitOfWork.CategoryRepo.FindById(viewModel.Category);
+			User user = GetCurrentUser();
+
 			try
 			{
+				Category category = UnitOfWork.CategoryRepo.FindById(viewModel.Category);
 				Product product = new Product
 				{
 					Name = viewModel.Name,
 					Price = viewModel.Price,
 					Description = viewModel.Description,
-					Count = viewModel.Count,
 					Category = category
 				};
 				UnitOfWork.ProductRepo.Create(product);
 				return RedirectToAction("List", "Product");
 			}
+			catch (DbEntityValidationException e)
+			{
+				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+				IEnumerable<string> messages = e.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
+				foreach (string message in messages)
+				{
+					ModelState.AddModelError("", message);
+				}
+				return View(viewModel);
+			}
+			catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
+			{
+				ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
+				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+				return View(viewModel);
+			}
 			catch
 			{
+				ModelState.AddModelError("", "Ошибка в работе системы");
 				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
 				return View(viewModel);
 			}
@@ -72,9 +109,15 @@ namespace OnlineShopApi.Controllers
 				repo.Remove(product);
 				return RedirectToAction("List");
 			}
+			catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
+			{
+				ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
+				return RedirectToAction("List", "Product");
+			}
 			catch
 			{
-				return RedirectToAction("List");
+				ModelState.AddModelError("", "Ошибка в работе системы");
+				return RedirectToAction("List", "Product");
 			}
 		}
 
@@ -88,7 +131,6 @@ namespace OnlineShopApi.Controllers
 				Id = product.Id,
 				Name = product.Name,
 				Price = product.Price,
-				Count = product.Count,
 				Category = product.CategoryId,
 				Description = product.Description
 			};
@@ -98,13 +140,38 @@ namespace OnlineShopApi.Controllers
 		[HttpPost]
 		public ActionResult Edit(EditProductViewModel viewModel)
 		{
-			Product product = UnitOfWork.ProductRepo.FindById(viewModel.Id);
-			product.Name = viewModel.Name;
-			product.Description = viewModel.Description;
-			product.Price = viewModel.Price;
-			product.Count = viewModel.Count;
-			UnitOfWork.SaveChanges();
-			return RedirectToAction("List", "Product");
+			User user = GetCurrentUser();
+			if (user == null) return RedirectToAction("Login", "Account");
+			try
+			{
+				Product product = UnitOfWork.ProductRepo.FindById(viewModel.Id);
+				product.Name = viewModel.Name;
+				product.Description = viewModel.Description;
+				product.Price = viewModel.Price;
+				UnitOfWork.SaveChanges();
+				return RedirectToAction("List", "Product");
+			}
+			catch (DbEntityValidationException e)
+			{
+				IEnumerable<string> messages = e.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.ErrorMessage);
+				foreach (string message in messages)
+				{
+					ModelState.AddModelError("", message);
+				}
+				return View(viewModel);
+			}
+			catch (Exception e) when (e is DbUpdateException || e is EntityCommandExecutionException)
+			{
+				ModelState.AddModelError("", "Для запрошенного действия не хватает прав");
+				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+				return View(viewModel);
+			}
+			catch
+			{
+				ModelState.AddModelError("", "Ошибка в работе системы");
+				ViewData["categories"] = UnitOfWork.CategoryRepo.Get().ToList();
+				return View(viewModel);
+			}
 		}
 	}
 }

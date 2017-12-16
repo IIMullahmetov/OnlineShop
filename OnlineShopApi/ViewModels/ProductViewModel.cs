@@ -1,7 +1,4 @@
-﻿using OnlineShop.DAL.Entities;
-using OnlineShopApi.ViewModels.Categories;
-
-namespace OnlineShopApi.ViewModels.Product
+﻿namespace OnlineShopApi.ViewModels.Product
 {
 	public class GetProductListViewModel
 	{
@@ -22,7 +19,7 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public string Description { get; set; }
 
-		public float Price { get; set; }
+		public int Price { get; set; }
 
 		public string Category { get; set; }
 
@@ -35,11 +32,9 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public string Description { get; set; }
 
-		public float Price { get; set; }
+		public int Price { get; set; }
 
 		public int Category { get; set; }
-
-		public int Count { get; set; }
 	}
 
 	public class GetBasketViewModel
@@ -50,7 +45,7 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public int Count { get; set; }
 
-		public float PricePerUnit { get; set; }
+		public int PricePerUnit { get; set; }
 	}
 
 	public class EditProductViewModel
@@ -61,10 +56,19 @@ namespace OnlineShopApi.ViewModels.Product
 
 		public string Description { get; set; }
 
-		public int Count { get; set; }
-
-		public float Price { get; set; }
+		public int Price { get; set; }
 
 		public int Category { get; set; }
+	}
+
+	public class SearchProductViewModel
+	{
+		public string Product { get; set; }
+
+		public int Category { get; set; }
+
+		public int MaxPrice { get; set; }
+
+		public int MinPrice { get; set; }
 	}
 }
